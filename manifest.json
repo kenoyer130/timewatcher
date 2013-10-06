@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+
+  "name": "ConnectWise TimeWatcher",
+  "description": "Allows you to set the ticket you are working on and automatically tracks the time spent on that ticket.",
+  "version": "1.0",
+  "permissions": [
+	"tabs", "https://cw.connectwise.net/*",
+	"storage"
+  ],
+  "web_accessible_resources" : [
+	"jquery-2.0.3.min.map",
+	"star.png",
+	"starSelected.png"
+  ],
+  "content_scripts": [
+	{
+		"js": [ "jquery-2.0.3.min.js", "timewatcherObjects.js", "timewatcher.js" ],
+		"matches": ["https://cw.connectwise.net/*"]
+	}
+  ],
+  "browser_action": {
+    "default_icon": "starSelected.png",
+    "default_popup": "timewatcher.html"
+  }
+}
