@@ -65,7 +65,7 @@ function setTimePicker(ticketBanner) {
 
 function createStarPicker(ticketData, ticketBanner) {
 	if(ticketData === null) {
-		prependStarPickerElement(false, ticketBanner);
+		prependStarPickerElement(false, ticketBanner, null);
 		return;
 	}
 	
@@ -76,23 +76,32 @@ function createStarPicker(ticketData, ticketBanner) {
 	var current;
 	
 	if(isNullOrUndefined(currentTicket))
-		prependStarPickerElement(false, ticketBanner)
+		prependStarPickerElement(false, ticketBanner, currentTicket)
 	else if(!isNullOrUndefined(currentTicket) && currentTicket.recid === ticketNumber)
-		prependStarPickerElement(true, ticketBanner)
+		prependStarPickerElement(true, ticketBanner, currentTicket)
 	else
-		prependStarPickerElement(false, ticketBanner);
+		prependStarPickerElement(false, ticketBanner, currentTicket);
 }
 
-function prependStarPickerElement(current, ticketBanner) {
-	var starPicker = getStarPickerElement(current);
+function prependStarPickerElement(current, ticketBanner, currentTicket) {
+	var starPicker = getStarPickerElement(current, currentTicket);
 	ticketBanner.prepend(starPicker);
 	
 	// this is horrible but we just keep polling and recreate the star if something clears it.
 	pollForTicketBannerElement();
 }
 
-function getStarPickerElement(current) {		
-	var starPicker = $("<img class='starPicker' style='cursor: pointer;' title='click to start/stop work on this ticket.' />");
+function getStarPickerElement(current, currentTicket) {		
+	var starPicker = $("<img class='starPicker' style='cursor: pointer;' />");
+	
+	if(!isNullOrUndefined(currentTicket) && !current)
+		starPicker.attr("title","currently working on \n"+ currentTicket.title);
+	else if(current) {
+		starPicker.attr("title","click to stop working on this ticket");
+	} else {
+		starPicker.attr("title","click to start working on this ticket");
+	}
+		
 	
 	starPicker.click(onStarPickerClicked);
 	
