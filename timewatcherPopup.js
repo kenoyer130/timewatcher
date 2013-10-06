@@ -55,8 +55,10 @@ function setTimeEntries(tickets) {
 	 
 	 for(i = 0; i < tickets.length; i++){
 		
-		rows+='<tr><td><span title=\''+ cleanTicket(tickets[i].title) +'\'>'+tickets[i].recid+'</span></td><td>'+formatDate(tickets[i].timeStarted)+'</td><td>'+formatDate(tickets[i].timeEnded)+'</td></tr>';
-	
+		rows+='<tr><td><span title=\''+ cleanTicket(tickets[i].title) +'\'>'+tickets[i].recid+'</span></td>';
+		rows+='<td>'+formatDate(tickets[i].timeStarted)+'</td>';
+		rows+='<td>'+formatDate(tickets[i].timeEnded)+'</td>';
+		rows+='<td>'+getTimeDiff(getParsedDate(tickets[i].timeStarted), getParsedDate(tickets[i].timeEnded))+'</td></tr>';	
 	 }
 	 
 	 $(rows).appendTo(timeEntries);

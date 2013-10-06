@@ -142,8 +142,10 @@ function toggleCurrent(ticketData) {
 	// if not null, see if the current ticket differs
 	if(ticketData.currentTicket.recid !== ticket.recid) {
 		// set the previous current ticket end time and push.
-		ticketData.currentTicket.endTime = new Date();
+		ticketData.currentTicket.timeEnded = new Date();
 		ticketData.tickets.push(ticketData.currentTicket);
+		
+		ticket.timeStarted = new Date();
 		
 		// set our new current ticket
 		ticketData.currentTicket = ticket;
