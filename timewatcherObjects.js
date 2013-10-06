@@ -12,15 +12,15 @@ function TicketData() {
 }
 
 TicketData.save = function(data) {
-	chrome.storage.local.set( {"ticketData" : JSON.stringify(data) });
+	chrome.storage.sync.set( {"ticketData" : JSON.stringify(data) });
 };
 
 TicketData.clear = function(callback) {
-	chrome.storage.local.remove( "ticketData" , callback);
+	chrome.storage.sync.remove( "ticketData" , callback);
 };
 
 TicketData.load = function(callback) {
-  chrome.storage.local.get("ticketData", function(data) {
+  chrome.storage.sync.get("ticketData", function(data) {
 		if(isNullOrUndefined(data["ticketData"])) {
 			callback(null);
 		} else {
