@@ -1,26 +1,32 @@
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="timewatcher.css">
 <script src="jquery-2.0.3.min.js"></script>
 <script src="timewatcherObjects.js"></script>
 <script src="timewatcherPopup.js"></script>
 </head>
 <body>
 <input type='button' id='btnRefresh' Value='refresh' />
-<div>Currently working on : <span id='currentlyWorking'></span></div>
+<div>Currently working on</div>
+<div id='currentlyWorking'></div>
 <div>Started at: <span id='currentStartTime'></span></div>
-<div>Hours so far: <span id='currentHours'></span></div>
-<table id='timeEntries'>
-	<thead>
-		<th>
-			<td>Ticket</td>
-			<td>Started&nbsp;At</td>
-			<td>Ended&nbsp;At</td>
-			<td>Hours</td>
-		</th>
-	</thead>
-	<tbody>
-	</tbody>
-</table>
+<div>Time so far: <span id='currentHours'></span></div>
+<hr>
+<div class='timeEntries'>
+	<table  id='timeEntries'>
+		<thead>
+			<tr>
+				<th>Ticket</th>
+				<th width="50px">Started&nbsp;At</th>
+				<th>Ended&nbsp;At</th>
+				<th>Time</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+<hr>
 <input type='button' id='btnClear' Value='clear' />
 </body>
 </html>

@@ -8,8 +8,7 @@ $(document).ready(function(){
 			if(!confirm("Are you sure you wish to clear all entries?"))
 				return;
 				
-			TicketData.clear();
-			refresh();
+			TicketData.clear(function(){ refresh();});
 		});
 
 		refresh();
@@ -33,24 +32,82 @@ function setCurrentTicket(ticket) {
 	
 	if(ticket === null || ticket === undefined) {
 		currentlyWorking.text("Nothing!");
+		currentlyWorking.attr("title","");
 		currentStartTime.text("");
 		currentHours.text("");
 		return;
 	}
 	
-	currentlyWorking.text(ticket.title);
-	currentStartTime.text(ticket.timeStarted);
-	//todo: current hours
+	currentlyWorking.text(trimTitle(ticket.title));
+	
+	currentStartTime.text(formatDate(ticket.timeStarted));
+	currentlyWorking.attr("title",cleanTicket(ticket.title));
+	
+	currentHours.text(getTimeDiff(ticket.timeStarted != null ? getParsedDate(ticket.timeStarted) : null, new Date()));
 }
 
 function setTimeEntries(tickets) {
-	var timeEntries = $("#timeEntries");
+	var timeEntries = $("#timeEntries tbody");
 	
-	 timeEntries.find("tr:gt(0)").remove();
+	 timeEntries.empty();
+	 
+	 var rows = "";
 	 
 	 for(i = 0; i < tickets.length; i++){
-		$('#timeEntries tr:last').after('<tr><td>'+tickets[i].title+'</td><td>'+tickets[i].timeStarted+'</td><td>'+tickets[i].timeEnded+'</td></tr>');
+		
+		rows+='<tr><td><span title=\''+ cleanTicket(tickets[i].title) +'\'>'+tickets[i].recid+'</span></td><td>'+formatDate(tickets[i].timeStarted)+'</td><td>'+formatDate(tickets[i].timeEnded)+'</td></tr>';
+	
 	 }
+	 
+	 $(rows).appendTo(timeEntries);
+}
+
+function trimTitle(title) {
+	if(isNullOrUndefined(title))
+		return "";
+		
+	return (title.length >  60) ? title.substring(0,60) : title;
+}
+
+function cleanTicket(title) {
+	title = title.replace('\'', "-");
+	return title;
+}
+
+function formatDate(date) {
+	if(isNullOrUndefined(date))
+		return "";
+
+	var parsed = getParsedDate(date);
+		
+	return parsed.toLocaleTimeString() + " " + parsed.toLocaleDateString()
+		
+}
+
+function getParsedDate(date) {
+	var parsed = new Date();
+	parsed.setTime(Date.parse(date));
+	
+	return parsed;
+}
+
+function getTimeDiff(startDate, endDate) {
+	if(isNullOrUndefined(startDate) || isNullOrUndefined(endDate))
+		return "";
+
+	var difference = (endDate.getTime() - startDate.getTime());
+	
+	var hours = Math.floor(difference / 36e5),
+    minutes = Math.floor(difference % 36e5 / 60000),
+    seconds = Math.floor(difference % 60000 / 1000);
+	
+	var parsed = new Date();
+	
+	parsed.setHours(hours);
+	parsed.setMinutes(minutes);
+	parsed.setSeconds(seconds);
+	
+	return parsed.getHours() + "h "+parsed.getMinutes()+"m "+parsed.getSeconds()+"s";
 }
 
 

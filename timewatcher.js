@@ -184,8 +184,6 @@ function startNewCurrent(ticket, ticketData) {
 	
 	ticketData.currentTicket = ticket;
 	ticket.timeStarted = new Date();
-	
-	ticketData.tickets.push(ticket);
 	TicketData.save(ticketData);
 }
 

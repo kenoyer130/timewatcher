@@ -15,8 +15,8 @@ TicketData.save = function(data) {
 	chrome.storage.local.set( {"ticketData" : JSON.stringify(data) });
 };
 
-TicketData.clear = function(data) {
-	chrome.storage.local.remove( "ticketData" );
+TicketData.clear = function(callback) {
+	chrome.storage.local.remove( "ticketData" , callback);
 };
 
 TicketData.load = function(callback) {

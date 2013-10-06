@@ -1,0 +1,33 @@
+body {
+	margin : 2px;
+	font: normal 12px Arial, Helvetica, sans-serif; 
+	color: #00496B;
+	width:400px;
+}
+
+#currentlyWorking {
+	margin-left: 10px;
+	margin-bottom: 3px;
+	color:black;
+}
+
+#currentStartTime {
+	color:black;
+}
+
+#currentHours {
+	color:black;
+}
+
+.timeEntries table {
+	font: normal 10px Arial, Helvetica, sans-serif; 
+	border-collapse: collapse; text-align: left; width: 390px; 
+}
+
+.timeEntries table th { padding: 3px 10px; }
+.timeEntries table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );background:-moz-linear-gradient( center top, #006699 5%, #00557F 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');background-color:#006699; color:#ffffff; font-size: 10px; font-weight: bold; border-left: 1px solid #0070A8; } 
+.timeEntries table thead th:first-child { border: none; }
+.timeEntries table tbody td { color: #00496B; border-left: 1px solid #E1EEF4;font-size: 10px;font-weight: normal; }
+.timeEntries table tbody .alt td { background: #E1EEF4; color: #00496B; }
+.timeEntries table tbody td:first-child { border-left: none; }
+.timeEntries table tbody tr:last-child td { border-bottom: none; }
