@@ -111,7 +111,7 @@ function getTicketNumber(txt) {
 }
 
 function getTicketTitle(txt) {
-	return txt.match(/Service Ticket/)[0];
+	return txt;
 }
 
 function selectStarPicker(ticketBanner) {
