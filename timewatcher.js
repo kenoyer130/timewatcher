@@ -143,7 +143,7 @@ function toggleCurrent(ticketData) {
 
 	// if null then just set the current ticket to starting work.
 	if(isNullOrUndefined(ticketData) || isNullOrUndefined(ticketData.currentTicket)) {
-		startNewCurrent(ticket, new TicketData());
+		startNewCurrent(ticket, isNullOrUndefined(ticketData) ? new TicketData() : ticketData);
 		setStarPickerImage(selectStarPicker(selectTicketBanner()), true);
 		return;
 	}	
