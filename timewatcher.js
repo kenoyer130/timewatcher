@@ -115,10 +115,6 @@ function setStarPickerImage(starPicker, current) {
 	starPicker.attr('src',imgUrl);
 }
 
-function getTicketNumber(txt) {
-	return txt.match(/Service Ticket \#([0-9]+)/)[1];
-}
-
 function getTicketTitle(txt) {
 	return txt;
 }

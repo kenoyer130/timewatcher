@@ -6,12 +6,14 @@
   "version": "1.0",
   "permissions": [
 	"tabs", "https://cw.connectwise.net/*",
-	"storage"
+	"storage",
+	"clipboardWrite"
   ],
   "web_accessible_resources" : [
 	"jquery-2.0.3.min.map",
 	"star.png",
-	"starSelected.png"
+	"starSelected.png",
+	"copy-16x16.png"
   ],
   "content_scripts": [
 	{

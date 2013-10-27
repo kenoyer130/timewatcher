@@ -34,3 +34,16 @@ TicketData.load = function(callback) {
 function isNullOrUndefined(item) {
 	return ( item === null || item === undefined);
 }
+
+function getTicketNumber(txt) {
+	return txt.match(/Service Ticket \#([0-9]+)/)[1];
+}
+
+function copyTextToClipboard(text) {
+    var copyFrom = $('<textarea/>');
+    copyFrom.text(text);
+    $('body').append(copyFrom);
+    copyFrom.select();
+    document.execCommand('copy');
+    copyFrom.remove();
+}

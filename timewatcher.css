@@ -33,6 +33,9 @@ body {
 	border-collapse: collapse; text-align: left; width: 490px; 
 }
 
+.clippy {
+	cursor: pointer;
+}
 
 .timeEntries table th { padding: 3px 10px; }
 .timeEntries table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );background:-moz-linear-gradient( center top, #006699 5%, #00557F 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');background-color:#006699; color:#ffffff; font-size: 10px; font-weight: bold; border-left: 1px solid #0070A8; } 

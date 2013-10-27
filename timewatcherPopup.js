@@ -1,5 +1,7 @@
 var MaxTicketTitle = 160;
 
+var TicketLink = "https://cw.connectwise.net/v4_6_release/ConnectWise.html?locale=en_US&locale=en-US&routeTo=ServiceFV&srRecID={0}";
+
 var currentDate = new Date();
 
 $(document).ready(function(){
@@ -59,7 +61,9 @@ function setCurrentTicket(ticket) {
 		return;
 	}
 	
-	currentlyWorking.text(trimTitle(ticket.title));
+	currentlyWorking.html(replaceTicketLink(trimTitle(ticket.title)));
+	
+	getClippy(ticket.title).prependTo(currentlyWorking);
 	
 	currentStartTime.text(formatDate(ticket.timeStarted));
 	currentlyWorking.attr("title",cleanTicket(ticket.title));
@@ -84,7 +88,7 @@ function setTimeEntries(tickets) {
 	 var rows = tickets.filter(function(ticket) {		
 		return (sameDay(getDate(ticket.timeStarted) , currentDate)) || (sameDay(getDate(ticket.timeEnded) , currentDate));
 	 }).map(function(ticket){
-		var row ='<tr><td><span title=\''+ cleanTicket(ticket.title) +'\'>'+ticket.recid+'</span></td>';
+		var row ='<tr><td><span title=\''+ cleanTicket(ticket.title) +'\'>'+getTicketLink(ticket.recid)+'</span></td>';
 		row+='<td>'+formatDate(ticket.timeStarted)+'</td>';
 		row+='<td>'+formatDate(ticket.timeEnded)+'</td>';
 		row+='<td>'+getTimeDiff(getParsedDate(ticket.timeStarted), getParsedDate(ticket.timeEnded))+'</td></tr>';
@@ -92,6 +96,23 @@ function setTimeEntries(tickets) {
 	 });
 	 
 	 $(rows.join("")).appendTo(timeEntries);
+}
+
+function replaceTicketLink(txt) {
+	var ticketNumber = getTicketNumber(txt);
+	var ticketLink = getTicketLink(ticketNumber);
+	return txt.replace(ticketNumber, ticketLink);
+}
+
+function getTicketLink(number) {
+	var link = TicketLink.replace("{0}", number);
+	return "<a href='"+link+"' target='_blank'>" + number + "<a/>";
+}
+
+function getClippy(txt) {
+	var clippy = $("<span class='clippy'><img src='copy-16x16.png' /></span>");
+	clippy.bind('click',copyTextToClipboard(txt));
+	return clippy;
 }
 
 function trimTitle(title) {
