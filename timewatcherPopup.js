@@ -1,3 +1,7 @@
+var MaxTicketTitle = 160;
+
+var currentDate = new Date();
+
 $(document).ready(function(){
 
 		$("#btnRefresh").click(function() {
@@ -10,19 +14,36 @@ $(document).ready(function(){
 				
 			TicketData.clear(function(){ refresh();});
 		});
-
+		
+		$(".prevDate").click(function() {
+			currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()-1);
+			refresh();
+		});
+		
+		$(".nextDate").click(function() {			
+			currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()+1);
+			refresh();
+		});
+		
 		refresh();
 	}
 );
 
 function refresh() {
+
 	TicketData.load(function(data){
 		if(data == null)
 			return;
 			
+		renderCurrentDate(currentDate);
+		
 		setCurrentTicket(data.currentTicket);
 		setTimeEntries(data.tickets);
 	});
+}
+
+function renderCurrentDate(currentDate) {
+	$(".curDate").text((currentDate.getMonth() + 1 ) + "/" + currentDate.getDate() + "/" + currentDate.getFullYear());
 }
 
 function setCurrentTicket(ticket) {
@@ -46,29 +67,40 @@ function setCurrentTicket(ticket) {
 	currentHours.text(getTimeDiff(ticket.timeStarted != null ? getParsedDate(ticket.timeStarted) : null, new Date()));
 }
 
+function getDate(date) {
+	date = date.replace(/-/g,'');
+	return new Date(date.substr(0,4), parseInt(date.substr(4,2))-1, date.substr(6,2));
+}
+
+function sameDay(date1, date2) {
+	return date1.getFullYear()==date2.getFullYear() && date1.getMonth()==date2.getMonth() && date1.getDate()==date2.getDate();
+}
+
 function setTimeEntries(tickets) {
 	var timeEntries = $("#timeEntries tbody");
 	
 	 timeEntries.empty();
 	 
-	 var rows = "";
+	  var selectedTickets = tickets.filter(function(ticket) {		
+		return (sameDay(getDate(ticket.timeStarted) , currentDate)) || (sameDay(getDate(ticket.timeEnded) , currentDate));
+	 });
 	 
-	 for(i = 0; i < tickets.length; i++){
-		
-		rows+='<tr><td><span title=\''+ cleanTicket(tickets[i].title) +'\'>'+tickets[i].recid+'</span></td>';
-		rows+='<td>'+formatDate(tickets[i].timeStarted)+'</td>';
-		rows+='<td>'+formatDate(tickets[i].timeEnded)+'</td>';
-		rows+='<td>'+getTimeDiff(getParsedDate(tickets[i].timeStarted), getParsedDate(tickets[i].timeEnded))+'</td></tr>';	
-	 }
+	 var rows = selectedTickets.map(function(ticket){
+		var row ='<tr><td><span title=\''+ cleanTicket(ticket.title) +'\'>'+ticket.recid+'</span></td>';
+		row+='<td>'+formatDate(ticket.timeStarted)+'</td>';
+		row+='<td>'+formatDate(ticket.timeEnded)+'</td>';
+		row+='<td>'+getTimeDiff(getParsedDate(ticket.timeStarted), getParsedDate(ticket.timeEnded))+'</td></tr>';
+		return row;
+	 });
 	 
-	 $(rows).appendTo(timeEntries);
+	 $(rows.join("")).appendTo(timeEntries);
 }
 
 function trimTitle(title) {
 	if(isNullOrUndefined(title))
 		return "";
 		
-	return (title.length >  60) ? title.substring(0,60) : title;
+	return (title.length >  MaxTicketTitle) ? title.substring(0, MaxTicketTitle) : title;
 }
 
 function cleanTicket(title) {

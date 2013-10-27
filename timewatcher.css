@@ -2,7 +2,7 @@ body {
 	margin : 2px;
 	font: normal 12px Arial, Helvetica, sans-serif; 
 	color: #00496B;
-	width:400px;
+	width:500px;
 }
 
 #currentlyWorking {
@@ -19,10 +19,20 @@ body {
 	color:black;
 }
 
+.navLink {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.curDate {
+	text-align: center;
+}
+
 .timeEntries table {
 	font: normal 10px Arial, Helvetica, sans-serif; 
-	border-collapse: collapse; text-align: left; width: 390px; 
+	border-collapse: collapse; text-align: left; width: 490px; 
 }
+
 
 .timeEntries table th { padding: 3px 10px; }
 .timeEntries table thead th {background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #006699), color-stop(1, #00557F) );background:-moz-linear-gradient( center top, #006699 5%, #00557F 100% );filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#006699', endColorstr='#00557F');background-color:#006699; color:#ffffff; font-size: 10px; font-weight: bold; border-left: 1px solid #0070A8; } 
