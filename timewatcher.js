@@ -47,7 +47,7 @@ function selectTicketBanner() {
 			
 	if(ticketBanner.text()!== "") {
 		var txt = ticketBanner.text();
-		if(txt.match(/Service Ticket \#([0-9]+)/)){
+		if(txt.match(/(Service|Project) Ticket \#([0-9]+)/)){
 			return ticketBanner;
 		}
 	}

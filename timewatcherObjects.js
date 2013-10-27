@@ -36,7 +36,7 @@ function isNullOrUndefined(item) {
 }
 
 function getTicketNumber(txt) {
-	return txt.match(/Service Ticket \#([0-9]+)/)[1];
+	return txt.match(/(Service|Project) Ticket \#([0-9]+)/)[2];
 }
 
 function copyTextToClipboard(text) {
