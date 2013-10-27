@@ -81,11 +81,9 @@ function setTimeEntries(tickets) {
 	
 	 timeEntries.empty();
 	 
-	  var selectedTickets = tickets.filter(function(ticket) {		
+	 var rows = tickets.filter(function(ticket) {		
 		return (sameDay(getDate(ticket.timeStarted) , currentDate)) || (sameDay(getDate(ticket.timeEnded) , currentDate));
-	 });
-	 
-	 var rows = selectedTickets.map(function(ticket){
+	 }).map(function(ticket){
 		var row ='<tr><td><span title=\''+ cleanTicket(ticket.title) +'\'>'+ticket.recid+'</span></td>';
 		row+='<td>'+formatDate(ticket.timeStarted)+'</td>';
 		row+='<td>'+formatDate(ticket.timeEnded)+'</td>';
