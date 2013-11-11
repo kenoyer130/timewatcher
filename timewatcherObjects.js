@@ -1,3 +1,5 @@
+var timewatcher = {};
+timewatcher.indexedDB = {};
 
 function Ticket() {
 	this.recid =  0;
@@ -19,15 +21,59 @@ TicketData.clear = function(callback) {
 	chrome.storage.sync.remove( "ticketData" , callback);
 };
 
-TicketData.load = function(callback) {
-  chrome.storage.sync.get("ticketData", function(data) {
-		if(isNullOrUndefined(data["ticketData"])) {
-			callback(null);
-		} else {
-			var ticketData = JSON.parse(data["ticketData"]);
-			callback(ticketData);
+TicketData.open = function() {
+	
+	timewatcher.indexedDB.db = null;
+	timewatcher.indexedDB.open = function() {
+	
+		var version = 1;
+		var request = indexedDB.open("timewatcher", version);
+		
+		// We can only create Object stores in a versionchange transaction.
+		request.onupgradeneeded = function(e) {
+		var db = e.target.result;
+
+		// A versionchange transaction is started automatically.
+		e.target.transaction.onerror = timewatcher.indexedDB.onerror;
+
+		if(db.objectStoreNames.contains("timewatcher")) {
+		  db.deleteObjectStore("timewatcher");
 		}
-	});
+
+		var store = db.createObjectStore("timewatcher",
+		  {keyPath: "recid"});
+		};
+	
+
+		request.onsuccess = function(e) {
+		timewatcher.indexedDB.db = e.target.result;
+			
+		};
+
+		request.onerror = timewatcher.indexedDB.onerror;
+	};
+}
+
+TicketData.load = function(callback) {
+
+  var db = timewatcher.indexedDB.db;
+  var trans = db.transaction(["timewatcher"], "readwrite");
+  var store = trans.objectStore("timewatcher");
+
+  var keyRange = IDBKeyRange.lowerBound(0);
+  var cursorRequest = store.openCursor(keyRange);
+
+  cursorRequest.onsuccess = function(e) {
+    var result = e.target.result;
+    if(!!result == false)
+      return;
+
+	TicketData.results.push(result);
+	  
+    result.continue();
+  };
+
+  cursorRequest.onerror = html5rocks.indexedDB.onerror;
 };
 
 // shared methods
