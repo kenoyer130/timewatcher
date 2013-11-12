@@ -58,7 +58,7 @@ function setTimePicker(ticketBanner) {
 
 	var ticketNumber = getTicketNumber(ticketBanner.text());
 
-	TicketData.load(function(data) {
+	chrome.runtime.sendMessage({action:"get"},function(data) {
 		createStarPicker(data, ticketBanner);
 	});
 }
@@ -164,7 +164,7 @@ function toggleCurrent(ticketData) {
 		
 	// set this ticket as not being worked.
 	ticketData.currentTicket.timeEnded = new Date();
-	ticketData.tickets.push(ticketData.currentTicket);
+	   .tickets.push(ticketData.currentTicket);
 	
 	// clear current ticket
 	ticketData.currentTicket = null;

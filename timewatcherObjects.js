@@ -1,6 +1,3 @@
-var timewatcher = {};
-timewatcher.indexedDB = {};
-
 function Ticket() {
 	this.recid =  0;
 	this.title = "";
@@ -13,6 +10,19 @@ function TicketData() {
 	this.tickets = new Array();
 }
 
+chrome.runtime.onMessage.addListener(
+		  function(request, sender, sendResponse) {
+		   
+			if (request.action == "get") {
+				TicketData.load(function(data) {
+					sendResponse(data);
+				});
+			} else if(request.action == "save") {
+				TicketData.save(function(request.data) {
+					sendResponse("done");
+				});
+		  });
+
 TicketData.save = function(data) {
 	chrome.storage.sync.set( {"ticketData" : JSON.stringify(data) });
 };
@@ -21,59 +31,15 @@ TicketData.clear = function(callback) {
 	chrome.storage.sync.remove( "ticketData" , callback);
 };
 
-TicketData.open = function() {
-	
-	timewatcher.indexedDB.db = null;
-	timewatcher.indexedDB.open = function() {
-	
-		var version = 1;
-		var request = indexedDB.open("timewatcher", version);
-		
-		// We can only create Object stores in a versionchange transaction.
-		request.onupgradeneeded = function(e) {
-		var db = e.target.result;
-
-		// A versionchange transaction is started automatically.
-		e.target.transaction.onerror = timewatcher.indexedDB.onerror;
-
-		if(db.objectStoreNames.contains("timewatcher")) {
-		  db.deleteObjectStore("timewatcher");
-		}
-
-		var store = db.createObjectStore("timewatcher",
-		  {keyPath: "recid"});
-		};
-	
-
-		request.onsuccess = function(e) {
-		timewatcher.indexedDB.db = e.target.result;
-			
-		};
-
-		request.onerror = timewatcher.indexedDB.onerror;
-	};
-}
-
 TicketData.load = function(callback) {
-
-  var db = timewatcher.indexedDB.db;
-  var trans = db.transaction(["timewatcher"], "readwrite");
-  var store = trans.objectStore("timewatcher");
-
-  var keyRange = IDBKeyRange.lowerBound(0);
-  var cursorRequest = store.openCursor(keyRange);
-
-  cursorRequest.onsuccess = function(e) {
-    var result = e.target.result;
-    if(!!result == false)
-      return;
-
-	TicketData.results.push(result);
-	  
-    result.continue();
-  };
-
-  cursorRequest.onerror = html5rocks.indexedDB.onerror;
+  chrome.storage.sync.get("ticketData", function(data) {
+		if(isNullOrUndefined(data["ticketData"])) {
+			callback(null);
+		} else {
+			var ticketData = JSON.parse(data["ticketData"]);
+			callback(ticketData);
+		}
+	});
 };
 
 // shared methods

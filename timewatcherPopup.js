@@ -4,8 +4,9 @@ var TicketLink = "https://cw.connectwise.net/v4_6_release/ConnectWise.html?local
 
 var currentDate = new Date();
 
-$(document).ready(function(){
 
+$(document).ready(function(){
+		
 		$("#btnRefresh").click(function() {
 			refresh();
 		});
