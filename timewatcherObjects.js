@@ -18,14 +18,13 @@ chrome.runtime.onMessage.addListener(
 					sendResponse(data);
 				});
 			} else if(request.action == "save") {
-				TicketData.save(function(request.data) {
+				chrome.storage.sync.set( {"ticketData" : request.data }, function() {
 					sendResponse("done");
 				});
-		  });
-
-TicketData.save = function(data) {
-	chrome.storage.sync.set( {"ticketData" : JSON.stringify(data) });
-};
+		  }	  
+		return true;
+	}
+);
 
 TicketData.clear = function(callback) {
 	chrome.storage.sync.remove( "ticketData" , callback);

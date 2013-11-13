@@ -124,7 +124,7 @@ function selectStarPicker(ticketBanner) {
 }
 
 function onStarPickerClicked() {
-	TicketData.load(function(data) {
+	chrome.runtime.sendMessage({action:"get"},function(data) {
 		if(data === null) {
 			toggleCurrent(null);
 		} else {
@@ -155,23 +155,22 @@ function toggleCurrent(ticketData) {
 		// set our new current ticket
 		ticketData.currentTicket = ticket;
 		
-		TicketData.save(ticketData);
-		
-		setStarPickerImage(selectStarPicker(), true);
-		
+		chrome.runtime.sendMessage({action:"save", data : JSON.stringify(ticketData)}, function() {		
+			setStarPickerImage(selectStarPicker(), true);		
+		});
 		return;
 	}
 		
 	// set this ticket as not being worked.
 	ticketData.currentTicket.timeEnded = new Date();
-	   .tickets.push(ticketData.currentTicket);
+	ticketData.tickets.push(ticketData.currentTicket);
 	
 	// clear current ticket
 	ticketData.currentTicket = null;
 	
-	TicketData.save(ticketData);
-	
-	setStarPickerImage(selectStarPicker(), false);
+	chrome.runtime.sendMessage({action:"save", data : JSON.stringify(ticketData)}, function() {		
+		setStarPickerImage(selectStarPicker(), false);		
+	});
 }
 
 function getTicketFromBanner(){
@@ -191,7 +190,9 @@ function startNewCurrent(ticket, ticketData) {
 	
 	ticketData.currentTicket = ticket;
 	ticket.timeStarted = new Date();
-	TicketData.save(ticketData);
+		chrome.runtime.sendMessage({action:"save", data : JSON.stringify(ticketData)},function() {		
+			
+	});
 }
 
 
